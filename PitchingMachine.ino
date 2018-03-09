@@ -33,30 +33,31 @@ void loop()
       Serial.println("Please enter a decimal from 0 to 1. The decimal will be multiplied by 255 to set the PWM");
       float temp=Serial.parseFloat();
       md.setSpeed2(temp, temp);
+
+      Serial.println("Would you like to brake? Type 'y' for yes");
+      char brake = Serial.read();
+      if(brake == 'y'){
+        md.setBrake2();
+
+        Serial.println("Would you like to unbrake? Type 'y' for yes");
+        char unbrake = Serial.read();
+        if(unbrake == 'y'){
+          md.clearBrake2();
+
+          Serial.println("Would you like to meaure the current? Type 'y' for yes");
+          char current = Serial.read();
+          if(current == 'y'){
+            md.getCurrent(MOTOR_1);
+            md.getCurrent(MOTOR_2);
+          }
+          delay(1000);
+        }
+        delay(1000);
+      }
+      delay(1000);
     }
     delay(2000);
   }
-  Serial.println("Would you like to brake? Type 'y' for yes");
-  char brake = Serial.read();
-  if(brake == 'y'){
-    md.setBrake2();
-  }
-  delay(1000);
-  
-  Serial.println("Would you like to unbrake? Type 'y' for yes");
-  char unbrake = Serial.read();
-  if(unbrake == 'y'){
-    md.clearBrake2();
-  }
-  delay(1000);
-  
-  Serial.println("Would you like to meaure the current? Type 'y' for yes");
-  char current = Serial.read();
-  if(current == 'y'){
-    md.getCurrent(MOTOR_1);
-    md.getCurrent(MOTOR_2);
-  }
-  delay(1000);
 
   //md.setSpeed2(0, 0);
   //return;
