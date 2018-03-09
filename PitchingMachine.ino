@@ -1,11 +1,10 @@
 #include "ArduinoMotorShieldR3.h"
 
-#define TIMER_MAX 781 //OCR1A = [16 MHz / (2 * N * fDesired)] - 1, N is prescalar (1024)
+#define TIMER_MAX 1 //OCR1A = [16 MHz / (2 * N * fDesired)] - 1, N is prescalar (1024)
 //I put in a timer interrupt if you want one. Use the equation above and set TIMER_MAX to get fDesired.
 //That is, it will call ISR(TIMER1_COMPA_vect) every 1/fDesired seconds. The default value gives 10 Hz.
 
 ArduinoMotorShieldR3 md;
-
 void setup()
 {
   md.init();
@@ -71,14 +70,23 @@ void InitializeInterrupt() //Don't mess with this function - it sets up the cont
   
   sei();    // turn interrupts back on
 }
-
+int COUNT = 0;
 ISR(PCINT1_vect) //Encoder Interrupt Service Routine
 {
-//This will trigger each time either of the IR sensors experiences any change in state
+  float RPM = 100000/COUNT;
+  if(RPM > 0){
+   Serial.println(RPM);
+  }
+  while(analogRead(A2) == 0){
+    ;
+  }
+  
+  COUNT = 0;
 }
 
 ISR(TIMER1_COMPA_vect) //Timer Interrupt Service Routine
 {
 //This will trigger at a frequency determined by TIMER_MAX
+COUNT++;
 }
 
