@@ -41,15 +41,22 @@ void loop()
   if(brake == 'y'){
     md.setBrake2();
   }
-  delay(2000);
+  delay(1000);
   
   Serial.println("Would you like to unbrake? Type 'y' for yes");
   char unbrake = Serial.read();
   if(unbrake == 'y'){
     md.clearBrake2();
   }
-  delay(2000);
+  delay(1000);
   
+  Serial.println("Would you like to meaure the current? Type 'y' for yes");
+  char current = Serial.read();
+  if(current == 'y'){
+    md.getCurrent(MOTOR_1);
+    md.getCurrent(MOTOR_2);
+  }
+  delay(1000);
 
   //md.setSpeed2(0, 0);
   //return;
