@@ -21,44 +21,37 @@ void setup()
   }
   Serial.println("");
   Serial.println("UW ECE Ideas Clinic Pitching Machine");
-  md.setSpeed2(1.0, 1.0);
+  md.setSpeed2(0.1, 0.1);
 }
 
 void loop()
 {
   if (Serial.available()>0){
-    Serial.println("Would you like to change the speed of the motor? Type 'y' for yes");
-    char set = Serial.read();
-    if(set == 'y'){
-      Serial.println("Please enter a decimal from 0 to 1. The decimal will be multiplied by 255 to set the PWM");
-      float temp=Serial.parseFloat();
-      md.setSpeed2(temp, temp);
-
-      Serial.println("Would you like to brake? Type 'y' for yes");
-      char brake = Serial.read();
-      if(brake == 'y'){
-        md.setBrake2();
-
-        Serial.println("Would you like to unbrake? Type 'y' for yes");
-        char unbrake = Serial.read();
-        if(unbrake == 'y'){
-          md.clearBrake2();
-
-          Serial.println("Would you like to meaure the current? Type 'y' for yes");
-          char current = Serial.read();
-          if(current == 'y'){
-            md.getCurrent(MOTOR_1);
-            md.getCurrent(MOTOR_2);
-          }
-          delay(1000);
-        }
+      Serial.println("Press 's' to change speed, 'b' to brake, 'u' to unbrake, and 'c' to read current");
+      char set = Serial.read();
+      if(set == 's'){
+        float temp=Serial.parseFloat();
+        md.setSpeed2(temp, temp);
         delay(1000);
       }
-      delay(1000);
-    }
-    delay(2000);
+      else if(set == 'b'){
+        Serial.println("Braking...");
+        md.setBrake2();
+        delay(1000);
+      }
+      else if(set == 'u'){
+         Serial.println("Unbraking...");
+         md.clearBrake2();
+         delay(1000);
+      }  
+      else if(set == 'c'){
+        Serial.println("Reading...");
+        Serial.println(md.getCurrent(MOTOR_1));
+        Serial.println(md.getCurrent(MOTOR_2));
+        delay(1000);
+      }
+      delay(2000);
   }
-
   //md.setSpeed2(0, 0);
   //return;
 }
@@ -88,5 +81,4 @@ ISR(TIMER1_COMPA_vect) //Timer Interrupt Service Routine
 {
 //This will trigger at a frequency determined by TIMER_MAX
 }
-
 
